@@ -20,7 +20,7 @@ def match_any(conds, s):
 				break
 		if b:
 			return i
-	return False
+	return None
 
 def exec_cmd(cmd, sample):
 	cmd = list(cmd)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 			if entry.is_file() and entry.name != "README.txt":
 				err = exec_cmd(cmd, entry.path).decode()
 				r = match_any(conds, err)
-				if r == False:
+				if r is None:
 					print("New Error Message: \n%s" % err)
 				else:
 					print("Old Error Message: %u" % r)

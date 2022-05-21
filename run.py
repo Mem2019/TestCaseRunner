@@ -11,14 +11,15 @@ def read_filter(file):
 		filter_empty(data.split('\n\n')))))
 
 def match_any(conds, s):
-	for cond in conds:
+	for i in range(0, len(conds)):
+		cond = conds[i]
 		b = True
 		for c in cond:
 			if s.find(c) < 0:
 				b = False
 				break
 		if b:
-			return True
+			return i
 	return False
 
 def exec_cmd(cmd, sample):
@@ -49,5 +50,8 @@ if __name__ == '__main__':
 		for entry in it:
 			if entry.is_file() and entry.name != "README.txt":
 				err = exec_cmd(cmd, entry.path).decode()
-				if not match_any(conds, err):
+				r = match_any(conds, err)
+				if r == False:
 					print("New Error Message: \n%s" % err)
+				else:
+					print("Old Error Message: %u" % r)

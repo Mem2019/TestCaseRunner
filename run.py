@@ -38,7 +38,7 @@ def exec_cmd(cmd, sample):
 	return r.stderr
 
 if __name__ == '__main__':
-	if len(sys.argv) < 3:
+	if len(sys.argv) < 4:
 		print("Usage: python3 run.py filter.txt directory program [args]",
 			file=sys.stderr)
 		exit(1)
@@ -48,6 +48,6 @@ if __name__ == '__main__':
 	with os.scandir(sys.argv[2]) as it:
 		for entry in it:
 			if entry.is_file() and entry.name != "README.txt":
-				err = exec_cmd(cmd, entry.path)
+				err = exec_cmd(cmd, entry.path).decode()
 				if not match_any(conds, err):
-					print("New Error Message: \n%s" % err.decode())
+					print("New Error Message: \n%s" % err)

@@ -48,7 +48,8 @@ if __name__ == '__main__':
 	with os.scandir(sys.argv[2]) as it:
 		for entry in it:
 			if entry.is_file() and entry.name != "README.txt":
-				sample, _, err = exec_cmd(cmd, entry.path).decode()
+				sample, _, err = exec_cmd(cmd, entry.path)
+				err = err.decode()
 				r = match_any(conds, err)
 				if r is None:
 					print("New Error Msg: \n%s\n%s" % (sample, err),

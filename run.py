@@ -35,8 +35,7 @@ def exec_cmd(cmd, sample):
 		with open(sample, 'rb') as fd:
 			data = fd.read()
 		r = subprocess.run(cmd, input=data, capture_output=True)
-	print(sample, r.stdout)
-	return r.stderr
+	return sample, r.stdout, r.stderr
 
 if __name__ == '__main__':
 	if len(sys.argv) < 4:
@@ -49,9 +48,10 @@ if __name__ == '__main__':
 	with os.scandir(sys.argv[2]) as it:
 		for entry in it:
 			if entry.is_file() and entry.name != "README.txt":
-				err = exec_cmd(cmd, entry.path).decode()
+				sample, _, err = exec_cmd(cmd, entry.path).decode()
 				r = match_any(conds, err)
 				if r is None:
-					print("New Error Message: \n%s" % err)
+					print("New Error Msg: \n%s\n%s" % (sample, err),
+						file=sys.stderr)
 				else:
-					print("Old Error Message: %u" % r)
+					print("Old Error Msg: \n%s = %u" % (sample, r))
